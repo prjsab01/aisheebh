@@ -7,7 +7,6 @@ A premium, professional portfolio platform with a LinkedIn-style public viewer a
 - **Public Viewer**: Clean, dark-themed portfolio display with dynamic sections
 - **Admin CMS**: Full content management with Firebase authentication
 - **Responsive Design**: Mobile-first with Tailwind CSS
-- **PWA Support**: Installable with offline capabilities
 - **SEO Optimized**: Dynamic metadata and sitemap generation
 - **Firebase Integration**: Auth, Firestore, and Storage
 
