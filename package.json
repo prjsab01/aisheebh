@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "powershell -Command \"if (Test-Path .next/cache) { Remove-Item -Recurse -Force .next/cache }\"",
+    "postbuild": "node -e \"const fs = require('fs'); if (fs.existsSync('.next/cache')) { fs.rmSync('.next/cache', { recursive: true, force: true }); }\"",
     "start": "next start",
     "lint": "next lint",
     "export": "next export"
