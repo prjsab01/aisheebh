@@ -14,7 +14,7 @@ export default function Experience({ experiences }: ExperienceProps) {
             <h3 className="text-xl font-semibold">{exp.title}</h3>
             <p className="text-gray-300">{exp.content}</p>
             <p className="text-sm text-gray-400">
-              {exp.dateRange?.start.toLocaleDateString()} - {exp.dateRange?.end?.toLocaleDateString() || 'Present'}
+              {exp.dateRange?.start} - {exp.dateRange?.end}
             </p>
           </div>
         ))}

@@ -2,8 +2,8 @@ export interface BaseDocument {
   id: string;
   order: number;
   visibility: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Profile extends BaseDocument {
@@ -25,7 +25,7 @@ export interface Entry extends BaseDocument {
   content: string;
   images?: string[];
   links?: { url: string; text: string }[];
-  dateRange?: { start: Date; end?: Date };
+  dateRange?: { start: string; end?: string };
   tags?: string[];
 }
 
