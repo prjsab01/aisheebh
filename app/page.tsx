@@ -60,17 +60,17 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {profile.bannerUrl && (
-        <div className="w-full h-64 bg-cover bg-center" style={{ backgroundImage: `url(${profile.bannerUrl})` }} />
+        <div className="w-full h-48 md:h-64 lg:h-80 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${profile.bannerUrl})` }} />
       )}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
         <div className="md:col-span-1">
           <Profile profile={profile} />
         </div>
         <div className="md:col-span-2">
+          {visibleHighlights.length > 0 && <Highlights highlights={visibleHighlights} />}
           <Section title="About">
             <p>{profile.about}</p>
           </Section>
-          {visibleHighlights.length > 0 && <Highlights highlights={visibleHighlights} />}
           {visibleSections.map(section => {
             const sectionEntries = visibleEntries.filter(e => e.sectionId === section.id)
             if (sectionEntries.length === 0) return null
@@ -82,15 +82,40 @@ export default function Home() {
                   <div>
                     {sectionEntries.map(entry => (
                       <div key={entry.id} className="mb-4">
-                        <h3 className="text-xl font-semibold">{entry.title}</h3>
+                        <div className="flex items-center mb-2">
+                          {entry.logoUrl && (
+                            <img src={entry.logoUrl} alt={entry.organization || 'Institution'} className="w-8 h-8 mr-2 rounded" />
+                          )}
+                          <div>
+                            <h3 className="text-xl font-semibold">{entry.title}</h3>
+                            {entry.organization && <p className="text-gray-300">{entry.organization}</p>}
+                          </div>
+                        </div>
                         <p>{entry.content}</p>
                         {entry.dateRange && (
                           <p className="text-sm text-gray-400">
                             {entry.dateRange.start} - {entry.dateRange.end || 'Present'}
+                            {entry.location && ` • ${entry.location}`}
                           </p>
                         )}
                         {entry.tags && entry.tags.length > 0 && (
-                          <p className="text-sm text-gray-400">Tags: {entry.tags.join(', ')}</p>
+                          <p className="text-sm text-gray-400">
+                            {section.type === 'education' ? 'Major Courses' : 'Tags'}: {entry.tags.join(', ')}
+                          </p>
+                        )}
+                        {entry.mediaLinks && entry.mediaLinks.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {entry.mediaLinks.map((media, index) => (
+                              <a key={index} href={media.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
+                                {media.type === 'image' && '🖼️'}
+                                {media.type === 'video' && '🎥'}
+                                {media.type === 'pdf' && '📄'}
+                                {media.type === 'ppt' && '📊'}
+                                {media.type === 'pptx' && '📊'}
+                                {media.type}
+                              </a>
+                            ))}
+                          </div>
                         )}
                       </div>
                     ))}

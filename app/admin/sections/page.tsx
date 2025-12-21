@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Section } from '@/types'
 import { getSections, addSection, updateSection, deleteSection } from '@/lib/data'
+import { useRouter } from 'next/navigation'
 
 export default function Sections() {
+  const router = useRouter()
   const [sections, setSections] = useState<Section[]>([])
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState<string | null>(null)
@@ -72,6 +74,9 @@ export default function Sections() {
 
   return (
     <div className="p-8 bg-gray-900 text-white min-h-screen">
+      <button onClick={() => router.push('/admin')} className="mb-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+        ← Back to Dashboard
+      </button>
       <h1 className="text-2xl font-bold mb-4">Manage Sections</h1>
       <button onClick={handleAdd} className="mb-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
         Add Section
@@ -92,15 +97,13 @@ export default function Sections() {
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
           />
-          <select
-            value={formData.layout || 'inline'}
-            onChange={(e) => setFormData({ ...formData, layout: e.target.value })}
+          <input
+            type="number"
+            placeholder="Order"
+            value={formData.order || 1}
+            onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
             className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
-          >
-            <option value="tab">Tab</option>
-            <option value="inline">Inline</option>
-            <option value="hybrid">Hybrid</option>
-          </select>
+          />
           <label className="flex items-center mb-2">
             <input
               type="checkbox"
@@ -123,7 +126,7 @@ export default function Sections() {
           <div key={section.id} className="p-4 mb-2 bg-gray-800 rounded flex justify-between items-center">
             <div>
               <h3 className="font-bold">{section.title}</h3>
-              <p>Type: {section.type}, Layout: {section.layout}</p>
+              <p>Type: {section.type}, Order: {section.order}</p>
             </div>
             <div>
               <button onClick={() => handleEdit(section)} className="mr-2 px-3 py-1 bg-yellow-600 text-white rounded">

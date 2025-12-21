@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Profile as ProfileType } from '@/types'
 import { getProfile, updateProfile } from '@/lib/data'
+import { useRouter } from 'next/navigation'
 
 export default function Profile() {
+  const router = useRouter()
   const [profile, setProfile] = useState<ProfileType | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -82,6 +84,9 @@ export default function Profile() {
 
   return (
     <div className="p-8 bg-gray-900 text-white min-h-screen">
+      <button onClick={() => router.push('/admin')} className="mb-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+        ← Back to Dashboard
+      </button>
       <h1 className="text-2xl font-bold mb-4">Edit Profile</h1>
       {message && <p className="mb-4 text-green-400">{message}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">

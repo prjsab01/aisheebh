@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react'
 import { Entry, Section } from '@/types'
 import { getSections, getEntries, addEntry, updateEntry, deleteEntry } from '@/lib/data'
+import { useRouter } from 'next/navigation'
 
 export default function Content() {
+  const router = useRouter()
   const [sections, setSections] = useState<Section[]>([])
   const [entries, setEntries] = useState<Entry[]>([])
   const [loading, setLoading] = useState(true)
@@ -34,12 +36,17 @@ export default function Content() {
   }, [])
 
   const handleAdd = () => {
+    const section = sections.find(s => s.id === selectedSection)
     setFormData({
       sectionId: selectedSection,
       title: '',
       content: '',
       dateRange: { start: '', end: '' },
       tags: [],
+      organization: '',
+      logoUrl: '',
+      location: '',
+      mediaLinks: [],
       order: entries.filter(e => e.sectionId === selectedSection).length + 1,
       visibility: true
     })
@@ -92,6 +99,9 @@ export default function Content() {
 
   return (
     <div className="p-8 bg-gray-900 text-white min-h-screen">
+      <button onClick={() => router.push('/admin')} className="mb-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+        ← Back to Dashboard
+      </button>
       <h1 className="text-2xl font-bold mb-4">Manage Content</h1>
       <div className="mb-4">
         <label className="block mb-2">Select Section:</label>
@@ -115,6 +125,27 @@ export default function Content() {
             placeholder="Title"
             value={formData.title || ''}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+          />
+          <input
+            type="text"
+            placeholder={sections.find(s => s.id === selectedSection)?.type === 'experience' ? 'Organization' : 'Institution'}
+            value={formData.organization || ''}
+            onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+            className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+          />
+          <input
+            type="url"
+            placeholder="Logo URL"
+            value={formData.logoUrl || ''}
+            onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
+            className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+          />
+          <input
+            type="text"
+            placeholder="Location"
+            value={formData.location || ''}
+            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
             className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
           />
           <textarea
@@ -142,9 +173,16 @@ export default function Content() {
           </div>
           <input
             type="text"
-            placeholder="Tags (comma separated)"
+            placeholder={sections.find(s => s.id === selectedSection)?.type === 'experience' ? 'Skills (comma separated)' : sections.find(s => s.id === selectedSection)?.type === 'education' ? 'Major Courses (comma separated)' : 'Tags (comma separated)'}
             value={formData.tags?.join(', ') || ''}
             onChange={(e) => setFormData({ ...formData, tags: e.target.value.split(',').map((t: string) => t.trim()) })}
+            className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+          />
+          <input
+            type="number"
+            placeholder="Order"
+            value={formData.order || 1}
+            onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
             className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
           />
           <label className="flex items-center mb-2">
@@ -168,9 +206,12 @@ export default function Content() {
         {filteredEntries.map(entry => (
           <div key={entry.id} className="p-4 mb-2 bg-gray-800 rounded">
             <h3 className="font-bold">{entry.title}</h3>
+            {entry.organization && <p>Organization: {entry.organization}</p>}
+            {entry.location && <p>Location: {entry.location}</p>}
             <p>{entry.content}</p>
             <p>{entry.dateRange ? `${entry.dateRange.start} - ${entry.dateRange.end || 'Present'}` : ''}</p>
-            <p>Tags: {entry.tags ? entry.tags.join(', ') : ''}</p>
+            <p>{sections.find(s => s.id === selectedSection)?.type === 'experience' ? 'Skills' : sections.find(s => s.id === selectedSection)?.type === 'education' ? 'Major Courses' : 'Tags'}: {entry.tags ? entry.tags.join(', ') : ''}</p>
+            <p>Order: {entry.order}</p>
             <div className="mt-2">
               <button onClick={() => handleEdit(entry)} className="mr-2 px-3 py-1 bg-yellow-600 text-white rounded">
                 Edit

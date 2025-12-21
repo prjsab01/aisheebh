@@ -28,6 +28,10 @@ export interface Entry extends BaseDocument {
   links?: { url: string; text: string }[];
   dateRange?: { start: string; end?: string };
   tags?: string[];
+  organization?: string;
+  logoUrl?: string;
+  location?: string;
+  mediaLinks?: { url: string; type: 'image' | 'video' | 'pdf' | 'ppt' | 'pptx'; thumbnail?: string }[];
 }
 
 export interface Highlight extends BaseDocument {
