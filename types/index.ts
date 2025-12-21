@@ -10,6 +10,7 @@ export interface Profile extends BaseDocument {
   name: string;
   headline: string;
   photoUrl: string;
+  bannerUrl?: string;
   about: string;
 }
 

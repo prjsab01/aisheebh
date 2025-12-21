@@ -59,9 +59,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <h1 className="text-4xl font-bold text-center py-10">
-        Welcome to Portfolio Platform
-      </h1>
+      {profile.bannerUrl && (
+        <div className="w-full h-64 bg-cover bg-center" style={{ backgroundImage: `url(${profile.bannerUrl})` }} />
+      )}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
         <div className="md:col-span-1">
           <Profile profile={profile} />

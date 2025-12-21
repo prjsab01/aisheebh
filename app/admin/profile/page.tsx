@@ -23,6 +23,7 @@ export default function Profile() {
             name: '',
             headline: '',
             photoUrl: '',
+            bannerUrl: '',
             about: '',
             order: 1,
             visibility: true,
@@ -110,6 +111,15 @@ export default function Profile() {
             type="url"
             value={profile.photoUrl}
             onChange={(e) => handleChange('photoUrl', e.target.value)}
+            className="w-full p-2 bg-gray-800 text-white rounded"
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Banner URL</label>
+          <input
+            type="url"
+            value={profile.bannerUrl || ''}
+            onChange={(e) => handleChange('bannerUrl', e.target.value)}
             className="w-full p-2 bg-gray-800 text-white rounded"
           />
         </div>
