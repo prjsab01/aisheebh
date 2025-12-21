@@ -14,7 +14,6 @@ A premium, professional portfolio platform with a LinkedIn-style public viewer a
 
 - **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS
 - **Backend**: Firebase (Auth, Firestore, Storage)
-- **Animations**: Framer Motion
 - **Icons**: Lucide React
 - **Fonts**: Inter
 - **Deployment**: Cloudflare Pages
