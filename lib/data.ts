@@ -1,6 +1,6 @@
 import { collection, getDocs, query, where, orderBy, doc, setDoc, addDoc, deleteDoc } from 'firebase/firestore';
 import { db } from './firebase';
-import { Profile, Highlight, Entry } from '@/types';
+import { Profile, Highlight, Entry, Section } from '@/types';
 
 export async function getProfile(): Promise<Profile | null> {
   const q = query(collection(db, 'profiles'), orderBy('order', 'asc'));
@@ -36,21 +36,46 @@ export async function deleteHighlight(id: string): Promise<void> {
   await deleteDoc(doc(db, 'highlights', id));
 }
 
-export async function getExperiences(): Promise<Entry[]> {
-  const q = query(collection(db, 'entries'), where('sectionId', '==', 'experience'), orderBy('order', 'asc'));
+export async function getSections(): Promise<Section[]> {
+  const q = query(collection(db, 'sections'), orderBy('order', 'asc'));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Section));
+}
+
+export async function addSection(section: Omit<Section, 'id'>): Promise<void> {
+  await addDoc(collection(db, 'sections'), section);
+}
+
+export async function updateSection(section: Section): Promise<void> {
+  const sectionRef = doc(db, 'sections', section.id);
+  await setDoc(sectionRef, section, { merge: true });
+}
+
+export async function deleteSection(id: string): Promise<void> {
+  await deleteDoc(doc(db, 'sections', id));
+}
+
+export async function getEntries(): Promise<Entry[]> {
+  const q = query(collection(db, 'entries'), orderBy('order', 'asc'));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Entry));
 }
 
-export async function addExperience(experience: Omit<Entry, 'id'>): Promise<void> {
-  await addDoc(collection(db, 'entries'), experience);
+export async function getEntriesBySection(sectionId: string): Promise<Entry[]> {
+  const q = query(collection(db, 'entries'), where('sectionId', '==', sectionId), orderBy('order', 'asc'));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Entry));
 }
 
-export async function updateExperience(experience: Entry): Promise<void> {
-  const experienceRef = doc(db, 'entries', experience.id);
-  await setDoc(experienceRef, experience, { merge: true });
+export async function addEntry(entry: Omit<Entry, 'id'>): Promise<void> {
+  await addDoc(collection(db, 'entries'), entry);
 }
 
-export async function deleteExperience(id: string): Promise<void> {
+export async function updateEntry(entry: Entry): Promise<void> {
+  const entryRef = doc(db, 'entries', entry.id);
+  await setDoc(entryRef, entry, { merge: true });
+}
+
+export async function deleteEntry(id: string): Promise<void> {
   await deleteDoc(doc(db, 'entries', id));
 }
