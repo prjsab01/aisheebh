@@ -1,55 +1,55 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Profile from '@/components/Profile'
 import Section from '@/components/Section'
 import Highlights from '@/components/Highlights'
 import Experience from '@/components/Experience'
 import { Profile as ProfileType, Highlight, Entry } from '@/types'
-
-const profile: ProfileType = {
-  id: '1',
-  name: 'John Doe',
-  headline: 'Software Engineer',
-  photoUrl: '',
-  about: 'Passionate about building great software.',
-  order: 1,
-  visibility: true,
-  createdAt: '2023-01-01',
-  updatedAt: '2023-01-01',
-}
-
-const highlights: Highlight[] = [
-  { id: '1', text: 'Award winner', order: 1, visibility: true, createdAt: '2023-01-01', updatedAt: '2023-01-01' }
-]
-
-const experiences: Entry[] = [
-  {
-    id: '1',
-    sectionId: 'experience',
-    title: 'Software Engineer',
-    content: 'Developed web applications using React and Node.js. Led a team of 3 developers.',
-    dateRange: { start: 'Jan 2020', end: 'Present' },
-    tags: ['React', 'Node.js', 'JavaScript'],
-    order: 1,
-    visibility: true,
-    createdAt: '2023-01-01',
-    updatedAt: '2023-01-01',
-  },
-  {
-    id: '2',
-    sectionId: 'experience',
-    title: 'Junior Developer',
-    content: 'Built responsive websites and maintained legacy codebases.',
-    dateRange: { start: 'Jun 2018', end: 'Dec 2019' },
-    tags: ['HTML', 'CSS', 'PHP'],
-    order: 2,
-    visibility: true,
-    createdAt: '2023-01-01',
-    updatedAt: '2023-01-01',
-  }
-]
+import { getProfile, getHighlights, getExperiences } from '@/lib/data'
 
 export default function Home() {
+  const [profile, setProfile] = useState<ProfileType | null>(null)
+  const [highlights, setHighlights] = useState<Highlight[]>([])
+  const [experiences, setExperiences] = useState<Entry[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [profileData, highlightsData, experiencesData] = await Promise.all([
+          getProfile(),
+          getHighlights(),
+          getExperiences()
+        ])
+        setProfile(profileData)
+        setHighlights(highlightsData)
+        setExperiences(experiencesData)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    )
+  }
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <p>No profile data found.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <h1 className="text-4xl font-bold text-center py-10">
@@ -63,8 +63,8 @@ export default function Home() {
           <Section title="About">
             <p>{profile.about}</p>
           </Section>
-          <Highlights highlights={highlights} />
-          <Experience experiences={experiences} />
+          <Highlights highlights={highlights.filter(h => h.visibility)} />
+          <Experience experiences={experiences.filter(e => e.visibility)} />
         </div>
       </div>
     </div>
