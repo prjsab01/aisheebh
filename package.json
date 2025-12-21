@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "powershell -Command \"if (Test-Path .next/cache) { Remove-Item -Recurse -Force .next/cache }\"",
     "start": "next start",
     "lint": "next lint",
     "export": "next export"
