@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Featured } from '@/types'
 import { getFeatured, addFeatured, updateFeatured, deleteFeatured } from '@/lib/data'
 import { useRouter } from 'next/navigation'
+import MDEditor from '@uiw/react-md-editor'
 
 export default function FeaturedAdmin() {
   const router = useRouter()
@@ -120,13 +121,14 @@ export default function FeaturedAdmin() {
           />
         </div>
         <div>
-          <label className="block mb-1">Text</label>
-          <textarea
+          <label className="block mb-1">Text (Markdown supported)</label>
+          <MDEditor
             value={formData.text}
-            onChange={(e) => setFormData({ ...formData, text: e.target.value })}
-            className="w-full p-2 bg-gray-700 text-white rounded"
-            rows={3}
-            required
+            onChange={(value) => setFormData({ ...formData, text: value || '' })}
+            preview="edit"
+            hideToolbar={false}
+            visibleDragbar={false}
+            data-color-mode="dark"
           />
         </div>
         <div>

@@ -199,6 +199,63 @@ export default function Content() {
             />
             Visible
           </label>
+
+          {/* Media Links Management */}
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium">Media Links</label>
+            {formData.mediaLinks?.map((media: any, index: number) => (
+              <div key={index} className="flex gap-2 mb-2 p-2 bg-gray-700 rounded">
+                <select
+                  value={media.type}
+                  onChange={(e) => {
+                    const newMediaLinks = [...(formData.mediaLinks || [])];
+                    newMediaLinks[index] = { ...media, type: e.target.value };
+                    setFormData({ ...formData, mediaLinks: newMediaLinks });
+                  }}
+                  className="p-1 bg-gray-600 text-white rounded text-sm"
+                >
+                  <option value="image">Image</option>
+                  <option value="video">Video</option>
+                  <option value="pdf">PDF</option>
+                  <option value="ppt">PPT</option>
+                  <option value="pptx">PPTX</option>
+                  <option value="link">Link</option>
+                </select>
+                <input
+                  type="url"
+                  placeholder="URL"
+                  value={media.url}
+                  onChange={(e) => {
+                    const newMediaLinks = [...(formData.mediaLinks || [])];
+                    newMediaLinks[index] = { ...media, url: e.target.value };
+                    setFormData({ ...formData, mediaLinks: newMediaLinks });
+                  }}
+                  className="flex-1 p-1 bg-gray-600 text-white rounded text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newMediaLinks = (formData.mediaLinks || []).filter((_: any, i: number) => i !== index);
+                    setFormData({ ...formData, mediaLinks: newMediaLinks });
+                  }}
+                  className="px-2 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                const newMediaLinks = [...(formData.mediaLinks || []), { type: 'image', url: '' }];
+                setFormData({ ...formData, mediaLinks: newMediaLinks });
+              }}
+              className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
+            >
+              Add Media Link
+            </button>
+          </div>
+
           <button onClick={handleSave} className="mr-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
             Save
           </button>
