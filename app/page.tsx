@@ -5,6 +5,7 @@ import Profile from '@/components/Profile'
 import Section from '@/components/Section'
 import Featured from '@/components/Featured'
 import Experience from '@/components/Experience'
+import Publications from '@/components/Publications'
 import MediaModal from '@/components/MediaModal'
 import { Profile as ProfileType, Highlight, Featured as FeaturedType, Entry, Section as SectionType } from '@/types'
 import { getProfile, getHighlights, getFeatured, getSections, getEntries } from '@/lib/data'
@@ -85,9 +86,13 @@ export default function Home() {
       <div className="absolute inset-0 bg-gradient-radial from-violet-500/5 via-purple-500/5 to-pink-500/5"></div>
       <div className="relative z-10">
         {profile.bannerUrl && (
-          <div className="w-full h-48 md:h-64 lg:h-80 bg-cover bg-center bg-no-repeat relative">
+          <div className="w-full h-48 md:h-64 lg:h-80 bg-cover bg-center bg-no-repeat relative overflow-hidden">
+            <RobustImage
+              src={convertToViewableUrl(profile.bannerUrl)}
+              alt="Profile Banner"
+              className="w-full h-full object-cover"
+            />
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-violet-500/20"></div>
-            <div className="absolute inset-0" style={{ backgroundImage: `url(${convertToViewableUrl(profile.bannerUrl)})` }}></div>
           </div>
         )}
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
@@ -125,6 +130,8 @@ export default function Home() {
                 <Section key={section.id} title={section.title}>
                   {section.type === 'experience' ? (
                     <Experience experiences={sectionEntries} onOpenModal={openModal} />
+                  ) : section.type === 'publications' ? (
+                    <Publications publications={sectionEntries} onOpenModal={openModal} />
                   ) : (
                     <div>
                       {sectionEntries.map(entry => (
@@ -153,10 +160,12 @@ export default function Home() {
                               {entry.content}
                             </ReactMarkdown>
                           </div>
-                          {entry.dateRange && (
+                          {entry.dateRange && (entry.dateRange.start || entry.dateRange.end) && (
                             <p className="text-sm text-gray-400 mb-2">
                               <span className="inline-block w-2 h-2 bg-violet-500 rounded-full mr-2"></span>
-                              {entry.dateRange.start} - {entry.dateRange.end || 'Present'}
+                              {entry.dateRange.start && entry.dateRange.end ? `${entry.dateRange.start} - ${entry.dateRange.end}` :
+                               entry.dateRange.start ? `${entry.dateRange.start} - Present` :
+                               entry.dateRange.end ? `Until ${entry.dateRange.end}` : ''}
                               {entry.location && <span className="text-violet-400"> • {entry.location}</span>}
                             </p>
                           )}
@@ -175,7 +184,7 @@ export default function Home() {
                                 <div key={index} className="group transition-all duration-300 hover:scale-105">
                                   {media.type === 'image' && (
                                     <button
-                                      onClick={() => openModal(media, entry.title)}
+                                      onClick={() => openModal(media, media.title || 'View Media')}
                                       className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-violet-500/30 shadow-lg shadow-violet-500/10 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
                                     >
                                       <RobustImage src={convertToViewableUrl(media.url)} alt="Media" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
@@ -190,7 +199,7 @@ export default function Home() {
                                      media.url.includes('instagram.com') || media.url.includes('drive.google.com') || 
                                      media.url.includes('vimeo.com') || media.url.includes('twitch.tv')) ? (
                                       <button
-                                        onClick={() => openModal(media, entry.title)}
+                                        onClick={() => openModal(media, media.title || 'View Media')}
                                         className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-pink-500/30 bg-gray-800 flex items-center justify-center shadow-lg shadow-pink-500/10 focus:outline-none focus:ring-2 focus:ring-pink-500/50"
                                       >
                                         <span className="text-2xl">▶️</span>
@@ -209,7 +218,7 @@ export default function Home() {
                                   )}
                                   {(media.type === 'pdf' || media.type === 'ppt' || media.type === 'pptx') && (
                                     <button
-                                      onClick={() => openModal(media, `${entry.title} - ${media.type.toUpperCase()}`)}
+                                      onClick={() => openModal(media, media.title || `${entry.title} - ${media.type.toUpperCase()}`)}
                                       className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                                     >
                                       {media.type === 'pdf' && '📄'}

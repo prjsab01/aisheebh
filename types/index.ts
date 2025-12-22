@@ -31,7 +31,14 @@ export interface Entry extends BaseDocument {
   organization?: string;
   logoUrl?: string;
   location?: string;
-  mediaLinks?: { url: string; type: 'image' | 'video' | 'pdf' | 'ppt' | 'pptx'; thumbnail?: string }[];
+  mediaLinks?: { url: string; type: 'image' | 'video' | 'pdf' | 'ppt' | 'pptx'; thumbnail?: string; title?: string }[];
+  // Publication-specific fields
+  publisher?: string;
+  publicationDate?: string;
+  coAuthors?: string[];
+  publicationUrl?: string;
+  rssUrl?: string;
+  publicationType?: string; // For tab categorization
 }
 
 export interface Highlight extends BaseDocument {

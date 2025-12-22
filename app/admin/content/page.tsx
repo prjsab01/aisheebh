@@ -49,7 +49,14 @@ export default function Content() {
       location: '',
       mediaLinks: [],
       order: entries.filter(e => e.sectionId === selectedSection).length + 1,
-      visibility: true
+      visibility: true,
+      // Publication-specific fields
+      publisher: '',
+      publicationDate: '',
+      coAuthors: [],
+      publicationUrl: '',
+      rssUrl: '',
+      publicationType: ''
     })
     setEditing('new')
   }
@@ -190,6 +197,60 @@ export default function Content() {
             onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
             className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
           />
+
+          {/* Publication-specific fields */}
+          {sections.find(s => s.id === selectedSection)?.type === 'publications' && (
+            <>
+              <input
+                type="text"
+                placeholder="Publisher/Publication"
+                value={formData.publisher || ''}
+                onChange={(e) => setFormData({ ...formData, publisher: e.target.value })}
+                className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+              />
+              <input
+                type="date"
+                placeholder="Publication Date"
+                value={formData.publicationDate || ''}
+                onChange={(e) => setFormData({ ...formData, publicationDate: e.target.value })}
+                className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+              />
+              <input
+                type="text"
+                placeholder="Co-Authors (comma separated)"
+                value={formData.coAuthors?.join(', ') || ''}
+                onChange={(e) => setFormData({ ...formData, coAuthors: e.target.value ? e.target.value.split(',').map((a: string) => a.trim()) : undefined })}
+                className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+              />
+              <input
+                type="url"
+                placeholder="Publication URL"
+                value={formData.publicationUrl || ''}
+                onChange={(e) => setFormData({ ...formData, publicationUrl: e.target.value })}
+                className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+              />
+              <input
+                type="url"
+                placeholder="RSS Feed URL (optional)"
+                value={formData.rssUrl || ''}
+                onChange={(e) => setFormData({ ...formData, rssUrl: e.target.value })}
+                className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+              />
+              <select
+                value={formData.publicationType || ''}
+                onChange={(e) => setFormData({ ...formData, publicationType: e.target.value })}
+                className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+              >
+                <option value="">Select Publication Type</option>
+                <option value="books">Books</option>
+                <option value="articles">Articles</option>
+                <option value="news">News Articles</option>
+                <option value="medium">Medium Blogs</option>
+                <option value="journals">Journals</option>
+                <option value="blog">Blog Posts</option>
+              </select>
+            </>
+          )}
           <label className="flex items-center mb-2">
             <input
               type="checkbox"
@@ -232,6 +293,17 @@ export default function Content() {
                   }}
                   className="flex-1 p-1 bg-gray-600 text-white rounded text-sm"
                 />
+                <input
+                  type="text"
+                  placeholder="Title (optional)"
+                  value={media.title || ''}
+                  onChange={(e) => {
+                    const newMediaLinks = [...(formData.mediaLinks || [])];
+                    newMediaLinks[index] = { ...media, title: e.target.value };
+                    setFormData({ ...formData, mediaLinks: newMediaLinks });
+                  }}
+                  className="flex-1 p-1 bg-gray-600 text-white rounded text-sm"
+                />
                 <button
                   type="button"
                   onClick={() => {
@@ -247,7 +319,7 @@ export default function Content() {
             <button
               type="button"
               onClick={() => {
-                const newMediaLinks = [...(formData.mediaLinks || []), { type: 'image', url: '' }];
+                const newMediaLinks = [...(formData.mediaLinks || []), { type: 'image', url: '', title: '' }];
                 setFormData({ ...formData, mediaLinks: newMediaLinks });
               }}
               className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
