@@ -41,7 +41,7 @@ export default function Featured({ featured }: FeaturedProps) {
                 <img
                   src={convertToViewableUrl(f.imageUrl)}
                   alt={f.text}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-44 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               </div>

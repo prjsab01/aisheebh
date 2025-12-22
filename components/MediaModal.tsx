@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { convertToViewableUrl } from '@/lib/mediaUtils'
 
 interface MediaModalProps {
   isOpen: boolean
@@ -35,7 +36,7 @@ export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) 
       case 'image':
         return (
           <img
-            src={media.url}
+            src={convertToViewableUrl(media.url)}
             alt="Media content"
             className="max-w-full max-h-full object-contain"
           />
