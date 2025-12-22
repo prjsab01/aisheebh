@@ -74,18 +74,21 @@ A premium, professional portfolio platform with a LinkedIn-style public viewer a
 ## Cloudflare Pages Deployment
 
 1. **Connect repository**:
-   - Go to Cloudflare Pages
-   - Connect your GitHub repository
+   - Go to [Cloudflare Pages](https://pages.cloudflare.com/)
+   - Connect your GitHub repository (`prjsab01/portfolio_ab`)
 
 2. **Build settings**:
    - Build command: `npm run build`
-   - Build output directory: `.next`
+   - Build output directory: `out`
+   - Root directory: `/`
 
 3. **Environment variables**:
    - Add all `NEXT_PUBLIC_*` variables from `.env.local`
+   - Set `NODE_VERSION` to `18`
 
 4. **Deploy**:
    - Push to `main` branch to trigger auto-deployment
+   - Cloudflare will automatically rebuild on each push
 
 ## Sample Data
 
