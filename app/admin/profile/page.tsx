@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Profile as ProfileType } from '@/types'
 import { getProfile, updateProfile } from '@/lib/data'
 import { useRouter } from 'next/navigation'
+import MDEditor from '@uiw/react-md-editor'
 
 export default function Profile() {
   const router = useRouter()
@@ -130,12 +131,13 @@ export default function Profile() {
         </div>
         <div>
           <label className="block mb-1">About</label>
-          <textarea
+          <MDEditor
             value={profile.about}
-            onChange={(e) => handleChange('about', e.target.value)}
-            className="w-full p-2 bg-gray-800 text-white rounded"
-            rows={4}
-            required
+            onChange={(value) => handleChange('about', value || '')}
+            preview="edit"
+            hideToolbar={false}
+            visibleDragbar={false}
+            data-color-mode="dark"
           />
         </div>
         <div>

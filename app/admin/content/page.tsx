@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Entry, Section } from '@/types'
 import { getSections, getEntries, addEntry, updateEntry, deleteEntry } from '@/lib/data'
 import { useRouter } from 'next/navigation'
+import MDEditor from '@uiw/react-md-editor'
 
 export default function Content() {
   const router = useRouter()
@@ -148,13 +149,17 @@ export default function Content() {
             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
             className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
           />
-          <textarea
-            placeholder="Content"
-            value={formData.content || ''}
-            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-            className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
-            rows={3}
-          />
+          <div className="mb-2">
+            <label className="block mb-1 text-sm">Content (Markdown supported)</label>
+            <MDEditor
+              value={formData.content || ''}
+              onChange={(value) => setFormData({ ...formData, content: value || '' })}
+              preview="edit"
+              hideToolbar={false}
+              visibleDragbar={false}
+              data-color-mode="dark"
+            />
+          </div>
           <div className="flex mb-2">
             <input
               type="text"

@@ -39,6 +39,13 @@ export interface Highlight extends BaseDocument {
   icon?: string;
 }
 
+export interface Featured extends BaseDocument {
+  imageUrl: string;
+  text: string;
+  buttonText?: string;
+  buttonUrl?: string;
+}
+
 export interface Social extends BaseDocument {
   platform: string;
   url: string;

@@ -31,6 +31,12 @@ export default function Dashboard() {
         <a href="/admin/profile" className="block bg-blue-600 p-4 rounded hover:bg-blue-700 text-center">
           Edit Profile
         </a>
+        <a href="/admin/highlights" className="block bg-blue-600 p-4 rounded hover:bg-blue-700 text-center">
+          Manage Highlights
+        </a>
+        <a href="/admin/featured" className="block bg-blue-600 p-4 rounded hover:bg-blue-700 text-center">
+          Manage Featured
+        </a>
         <a href="/admin/sections" className="block bg-blue-600 p-4 rounded hover:bg-blue-700 text-center">
           Manage Sections
         </a>
