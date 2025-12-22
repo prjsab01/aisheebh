@@ -117,11 +117,31 @@ export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) 
               allowFullScreen
             />
           );
+        } else if (media.url.includes('drive.google.com')) {
+          // Google Drive video - use iframe preview
+          let embedUrl = media.url;
+          if (media.url.includes('/file/d/')) {
+            const fileId = media.url.split('/file/d/')[1].split('/')[0];
+            embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+          } else if (media.url.includes('id=')) {
+            const fileId = media.url.split('id=')[1].split('&')[0];
+            embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+          }
+          
+          return (
+            <iframe
+              src={embedUrl}
+              className="w-full h-full min-h-[400px]"
+              title="Google Drive Video"
+              allowFullScreen
+              allow="autoplay; fullscreen"
+            />
+          );
         } else {
-          // Direct video file - handle Google Drive videos
+          // Direct video file
           return (
             <video
-              src={convertToViewableUrl(media.url)}
+              src={media.url}
               controls
               className="max-w-full max-h-full"
               autoPlay
