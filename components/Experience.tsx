@@ -1,27 +1,14 @@
 import { Entry } from '@/types'
 import ReactMarkdown from 'react-markdown'
-import { useState } from 'react'
-import MediaModal from './MediaModal'
 import { convertToViewableUrl } from '@/lib/mediaUtils'
 import RobustImage from './RobustImage'
 
 interface ExperienceProps {
   experiences: Entry[]
+  onOpenModal?: (media: any, title: string) => void
 }
 
-export default function Experience({ experiences }: ExperienceProps) {
-  const [modalOpen, setModalOpen] = useState(false)
-  const [selectedMedia, setSelectedMedia] = useState<{url: string, type: string} | null>(null)
-
-  const openModal = (media: {url: string, type: string}) => {
-    setSelectedMedia(media)
-    setModalOpen(true)
-  }
-
-  const closeModal = () => {
-    setModalOpen(false)
-    setSelectedMedia(null)
-  }
+export default function Experience({ experiences, onOpenModal }: ExperienceProps) {
   return (
     <>
       <div className="space-y-6">
@@ -70,7 +57,7 @@ export default function Experience({ experiences }: ExperienceProps) {
                     <div key={index} className="group transition-all duration-300 hover:scale-105">
                       {media.type === 'image' && (
                         <button
-                          onClick={() => openModal(media)}
+                          onClick={() => onOpenModal?.(media, exp.title)}
                           className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-violet-500/30 shadow-lg shadow-violet-500/10 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
                         >
                           <RobustImage src={convertToViewableUrl(media.url)} alt="Media" className="w-full h-full object-cover" />
@@ -85,7 +72,7 @@ export default function Experience({ experiences }: ExperienceProps) {
                          media.url.includes('instagram.com') || media.url.includes('drive.google.com') || 
                          media.url.includes('vimeo.com') || media.url.includes('twitch.tv')) ? (
                           <button
-                            onClick={() => openModal(media)}
+                            onClick={() => onOpenModal?.(media, exp.title)}
                             className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-pink-500/30 bg-gray-800 flex items-center justify-center shadow-lg shadow-pink-500/10 focus:outline-none focus:ring-2 focus:ring-pink-500/50"
                           >
                             <span className="text-2xl">▶️</span>
@@ -105,7 +92,7 @@ export default function Experience({ experiences }: ExperienceProps) {
                       {media.type === 'pdf' && (
                         (media.url.includes('drive.google.com') || media.url.includes('docs.google.com')) ? (
                           <button
-                            onClick={() => openModal(media)}
+                            onClick={() => onOpenModal?.(media, `${exp.title} - PDF`)}
                             className="w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                           >
                             📄
@@ -119,7 +106,7 @@ export default function Experience({ experiences }: ExperienceProps) {
                       {(media.type === 'ppt' || media.type === 'pptx') && (
                         media.url.includes('drive.google.com') || media.url.includes('docs.google.com') ? (
                           <button
-                            onClick={() => openModal(media)}
+                            onClick={() => onOpenModal?.(media, `${exp.title} - ${media.type.toUpperCase()}`)}
                             className="w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                           >
                             📊
@@ -143,11 +130,6 @@ export default function Experience({ experiences }: ExperienceProps) {
           </div>
         ))}
       </div>
-      <MediaModal
-        isOpen={modalOpen}
-        onClose={closeModal}
-        media={selectedMedia}
-      />
     </>
   )
 }

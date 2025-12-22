@@ -32,8 +32,8 @@ export default function Profile({ profile, highlights = [] }: ProfileProps) {
         <div className="space-y-2 mb-4">
           {highlights.map(h => (
             <div key={h.id} className="flex items-start gap-3 p-3 bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-lg border border-pink-500/20 backdrop-blur-sm">
-              <span className="text-pink-400 text-lg mt-0.5">✨</span>
-              <p className="text-gray-300 leading-relaxed text-sm">{h.icon && <span className="mr-2">{h.icon}</span>}{h.text}</p>
+              <span className="text-pink-400 text-lg mt-0.5">{h.icon || '✨'}</span>
+              <p className="text-gray-300 leading-relaxed text-sm">{h.text}</p>
             </div>
           ))}
         </div>

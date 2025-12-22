@@ -5,6 +5,7 @@ import Profile from '@/components/Profile'
 import Section from '@/components/Section'
 import Featured from '@/components/Featured'
 import Experience from '@/components/Experience'
+import MediaModal from '@/components/MediaModal'
 import { Profile as ProfileType, Highlight, Featured as FeaturedType, Entry, Section as SectionType } from '@/types'
 import { getProfile, getHighlights, getFeatured, getSections, getEntries } from '@/lib/data'
 import ReactMarkdown from 'react-markdown'
@@ -17,6 +18,9 @@ export default function Home() {
   const [featured, setFeatured] = useState<FeaturedType[]>([])
   const [sections, setSections] = useState<SectionType[]>([])
   const [entries, setEntries] = useState<Entry[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedMedia, setSelectedMedia] = useState<any>(null)
+  const [modalTitle, setModalTitle] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -42,6 +46,18 @@ export default function Home() {
     }
     fetchData()
   }, [])
+
+  const openModal = (media: any, title: string = '') => {
+    setSelectedMedia(media)
+    setModalTitle(title)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setSelectedMedia(null)
+    setModalTitle('')
+  }
 
   if (loading) {
     return (
@@ -108,7 +124,7 @@ export default function Home() {
               return (
                 <Section key={section.id} title={section.title}>
                   {section.type === 'experience' ? (
-                    <Experience experiences={sectionEntries} />
+                    <Experience experiences={sectionEntries} onOpenModal={openModal} />
                   ) : (
                     <div>
                       {sectionEntries.map(entry => (
@@ -156,36 +172,57 @@ export default function Home() {
                           {entry.mediaLinks && entry.mediaLinks.length > 0 && (
                             <div className="flex flex-wrap gap-3">
                               {entry.mediaLinks.map((media, index) => (
-                                <a key={index} href={media.url} target="_blank" rel="noopener noreferrer" className="group transition-all duration-300 hover:scale-105">
+                                <div key={index} className="group transition-all duration-300 hover:scale-105">
                                   {media.type === 'image' && (
-                                    <div className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-violet-500/30 shadow-lg shadow-violet-500/10">
+                                    <button
+                                      onClick={() => openModal(media, entry.title)}
+                                      className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-violet-500/30 shadow-lg shadow-violet-500/10 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                                    >
                                       <RobustImage src={convertToViewableUrl(media.url)} alt="Media" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
                                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-1">
                                         <span className="text-white text-xs font-medium">View</span>
                                       </div>
-                                    </div>
+                                    </button>
                                   )}
                                   {media.type === 'video' && (
-                                    <div className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-pink-500/30 bg-gray-800 flex items-center justify-center shadow-lg shadow-pink-500/10">
-                                      <span className="text-2xl">▶️</span>
-                                      <div className="absolute inset-0 bg-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                        <span className="text-white font-medium">Play</span>
-                                      </div>
-                                    </div>
+                                    (media.url.includes('youtube.com') || media.url.includes('youtu.be') || 
+                                     media.url.includes('dailymotion.com') || media.url.includes('facebook.com') || 
+                                     media.url.includes('instagram.com') || media.url.includes('drive.google.com') || 
+                                     media.url.includes('vimeo.com') || media.url.includes('twitch.tv')) ? (
+                                      <button
+                                        onClick={() => openModal(media, entry.title)}
+                                        className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-pink-500/30 bg-gray-800 flex items-center justify-center shadow-lg shadow-pink-500/10 focus:outline-none focus:ring-2 focus:ring-pink-500/50"
+                                      >
+                                        <span className="text-2xl">▶️</span>
+                                        <div className="absolute inset-0 bg-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                          <span className="text-white font-medium">Play</span>
+                                        </div>
+                                      </button>
+                                    ) : (
+                                      <a href={media.url} target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-pink-500/30 bg-gray-800 flex items-center justify-center shadow-lg shadow-pink-500/10">
+                                        <span className="text-2xl">▶️</span>
+                                        <div className="absolute inset-0 bg-pink-500/20 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                          <span className="text-white font-medium">Play</span>
+                                        </div>
+                                      </a>
+                                    )
                                   )}
                                   {(media.type === 'pdf' || media.type === 'ppt' || media.type === 'pptx') && (
-                                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30">
+                                    <button
+                                      onClick={() => openModal(media, `${entry.title} - ${media.type.toUpperCase()}`)}
+                                      className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                                    >
                                       {media.type === 'pdf' && '📄'}
                                       {(media.type === 'ppt' || media.type === 'pptx') && '📊'}
                                       <span className="font-medium">{media.type.toUpperCase()}</span>
-                                    </div>
+                                    </button>
                                   )}
                                   {!['image', 'video', 'pdf', 'ppt', 'pptx'].includes(media.type) && (
-                                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-violet-500/20 to-purple-500/20 rounded-lg text-sm text-gray-300 hover:from-violet-500/30 hover:to-purple-500/30 transition-all duration-300 border border-violet-500/30">
+                                    <a href={media.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-violet-500/20 to-purple-500/20 rounded-lg text-sm text-gray-300 hover:from-violet-500/30 hover:to-purple-500/30 transition-all duration-300 border border-violet-500/30">
                                       🔗 <span className="font-medium">{media.type}</span>
-                                    </div>
+                                    </a>
                                   )}
-                                </a>
+                                </div>
                               ))}
                             </div>
                           )}
@@ -199,6 +236,12 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <MediaModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        media={selectedMedia}
+        title={modalTitle}
+      />
     </div>
   )
 }

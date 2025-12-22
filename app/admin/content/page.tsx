@@ -178,9 +178,9 @@ export default function Content() {
           </div>
           <input
             type="text"
-            placeholder={sections.find(s => s.id === selectedSection)?.type === 'experience' ? 'Skills (comma separated)' : sections.find(s => s.id === selectedSection)?.type === 'education' ? 'Major Courses (comma separated)' : 'Tags (comma separated)'}
+            placeholder={sections.find(s => s.id === selectedSection)?.type === 'experience' ? 'Skills (comma separated, optional)' : sections.find(s => s.id === selectedSection)?.type === 'education' ? 'Major Courses (comma separated, optional)' : 'Tags (comma separated, optional)'}
             value={formData.tags?.join(', ') || ''}
-            onChange={(e) => setFormData({ ...formData, tags: e.target.value.split(',').map((t: string) => t.trim()) })}
+            onChange={(e) => setFormData({ ...formData, tags: e.target.value ? e.target.value.split(',').map((t: string) => t.trim()) : undefined })}
             className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
           />
           <input

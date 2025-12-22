@@ -9,9 +9,10 @@ interface MediaModalProps {
     url: string
     type: string
   } | null
+  title?: string
 }
 
-export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) {
+export default function MediaModal({ isOpen, onClose, media, title }: MediaModalProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -267,6 +268,13 @@ export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) 
         >
           ×
         </button>
+
+        {/* Title */}
+        {title && (
+          <div className="px-6 py-4 border-b border-gray-700 bg-gray-800/50">
+            <h2 className="text-xl font-semibold text-white">{title}</h2>
+          </div>
+        )}
 
         {/* Media content */}
         <div className="flex items-center justify-center p-4 min-h-[400px]">
