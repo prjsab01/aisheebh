@@ -118,10 +118,10 @@ export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) 
             />
           );
         } else {
-          // Direct video file
+          // Direct video file - handle Google Drive videos
           return (
             <video
-              src={media.url}
+              src={convertToViewableUrl(media.url)}
               controls
               className="max-w-full max-h-full"
               autoPlay
