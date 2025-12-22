@@ -91,19 +91,28 @@ export default function Experience({ experiences }: ExperienceProps) {
                       {media.type === 'pdf' && (
                         <button
                           onClick={() => openModal(media)}
-                          className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                          className="w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                         >
-                          📄 <span className="font-medium">PDF</span>
+                          📄
                         </button>
                       )}
                       {(media.type === 'ppt' || media.type === 'pptx') && (
-                        <a href={media.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30">
-                          📊 <span className="font-medium">{media.type.toUpperCase()}</span>
-                        </a>
+                        media.url.includes('drive.google.com') || media.url.includes('docs.google.com') ? (
+                          <button
+                            onClick={() => openModal(media)}
+                            className="w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                          >
+                            📊
+                          </button>
+                        ) : (
+                          <a href={media.url} target="_blank" rel="noopener noreferrer" className="w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30">
+                            📊
+                          </a>
+                        )
                       )}
                       {!['image', 'video', 'pdf', 'ppt', 'pptx'].includes(media.type) && (
-                        <a href={media.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-violet-500/20 to-purple-500/20 rounded-lg text-sm text-gray-300 hover:from-violet-500/30 hover:to-purple-500/30 transition-all duration-300 border border-violet-500/30">
-                          🔗 <span className="font-medium">{media.type}</span>
+                        <a href={media.url} target="_blank" rel="noopener noreferrer" className="w-16 h-16 flex items-center justify-center bg-gradient-to-r from-violet-500/20 to-purple-500/20 rounded-lg text-sm text-gray-300 hover:from-violet-500/30 hover:to-purple-500/30 transition-all duration-300 border border-violet-500/30">
+                          🔗
                         </a>
                       )}
                     </div>

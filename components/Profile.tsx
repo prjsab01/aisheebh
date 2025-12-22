@@ -1,10 +1,11 @@
-import { Profile as ProfileType } from '@/types'
+import { Profile as ProfileType, Highlight } from '@/types'
 
 interface ProfileProps {
   profile: ProfileType
+  highlights?: Highlight[]
 }
 
-export default function Profile({ profile }: ProfileProps) {
+export default function Profile({ profile, highlights = [] }: ProfileProps) {
   return (
     <div className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 p-6 rounded-xl border border-violet-500/20 shadow-2xl shadow-violet-500/10 backdrop-blur-sm">
       {profile.photoUrl ? (
@@ -23,7 +24,18 @@ export default function Profile({ profile }: ProfileProps) {
         </div>
       )}
       <h1 className="text-2xl font-bold text-center text-white mb-2 drop-shadow-lg">{profile.name}</h1>
-      <p className="text-center text-violet-300 font-medium drop-shadow-sm">{profile.headline}</p>
+      <p className="text-center text-violet-300 font-medium drop-shadow-sm mb-4">{profile.headline}</p>
+      
+      {highlights.length > 0 && (
+        <div className="space-y-2 mb-4">
+          {highlights.map(h => (
+            <div key={h.id} className="flex items-start gap-3 p-3 bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-lg border border-pink-500/20 backdrop-blur-sm">
+              <span className="text-pink-400 text-lg mt-0.5">✨</span>
+              <p className="text-gray-300 leading-relaxed text-sm">{h.icon && <span className="mr-2">{h.icon}</span>}{h.text}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

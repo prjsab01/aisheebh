@@ -75,20 +75,31 @@ A premium, professional portfolio platform with a LinkedIn-style public viewer a
 
 1. **Connect repository**:
    - Go to [Cloudflare Pages](https://pages.cloudflare.com/)
-   - Connect your GitHub repository (`prjsab01/portfolio_ab`)
+   - Click "Create a project"
+   - Choose "Connect to Git"
+   - Select your GitHub account
+   - Choose repository: `prjsab01/portfolio_ab`
 
-2. **Build settings**:
-   - Build command: `npm run build`
-   - Build output directory: `out`
-   - Root directory: `/`
+2. **Configure Build Settings**:
+   - **Build command**: `npm run build`
+   - **Build output directory**: `out`
+   - **Root directory**: `/` (leave empty)
 
-3. **Environment variables**:
-   - Add all `NEXT_PUBLIC_*` variables from `.env.local`
-   - Set `NODE_VERSION` to `18`
+3. **Environment Variables**:
+   - Add all your Firebase config variables from `.env.local`:
+     - `NEXT_PUBLIC_FIREBASE_API_KEY`
+     - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+     - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+     - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+     - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+     - `NEXT_PUBLIC_FIREBASE_APP_ID`
 
 4. **Deploy**:
-   - Push to `main` branch to trigger auto-deployment
-   - Cloudflare will automatically rebuild on each push
+   - Click "Save and Deploy"
+   - Cloudflare will build and deploy your site
+   - Future pushes to `main` branch will auto-deploy
+
+**Note**: No `wrangler.toml` file is needed for Cloudflare Pages static site deployment. The build configuration is set in the Cloudflare dashboard.
 
 ## Sample Data
 

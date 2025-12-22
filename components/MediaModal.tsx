@@ -61,20 +61,40 @@ export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) 
         )
       case 'ppt':
       case 'pptx':
-        return (
-          <div className="flex flex-col items-center justify-center h-full text-center">
-            <div className="text-6xl mb-4">📊</div>
-            <p className="text-white text-lg mb-4">PowerPoint Presentation</p>
-            <a
-              href={media.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg shadow-violet-500/25"
-            >
-              Open in New Tab
-            </a>
-          </div>
-        )
+        if (media.url.includes('drive.google.com') || media.url.includes('docs.google.com')) {
+          // Convert Google Drive link to embeddable format
+          let embedUrl = media.url;
+          if (media.url.includes('/file/d/')) {
+            const fileId = media.url.split('/file/d/')[1].split('/')[0];
+            embedUrl = `https://docs.google.com/presentation/d/${fileId}/embed`;
+          } else if (media.url.includes('/presentation/d/')) {
+            embedUrl = media.url.replace('/edit', '/embed');
+          }
+          
+          return (
+            <iframe
+              src={embedUrl}
+              className="w-full h-full min-h-[600px]"
+              title="PowerPoint Presentation"
+              allowFullScreen
+            />
+          );
+        } else {
+          return (
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="text-6xl mb-4">📊</div>
+              <p className="text-white text-lg mb-4">PowerPoint Presentation</p>
+              <a
+                href={media.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg shadow-violet-500/25"
+              >
+                Open in New Tab
+              </a>
+            </div>
+          );
+        }
       default:
         return (
           <div className="flex flex-col items-center justify-center h-full text-center">
