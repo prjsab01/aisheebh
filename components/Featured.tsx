@@ -44,7 +44,7 @@ export default function Featured({ featured }: FeaturedProps) {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               </div>
-              <div className="p-6 flex-1 flex flex-col">
+              <div className="p-6 flex-1 flex flex-col min-h-[200px]">
                 <div className="prose prose-invert prose-sm max-w-none mb-4 flex-1">
                   <ReactMarkdown
                     components={{
@@ -69,6 +69,7 @@ export default function Featured({ featured }: FeaturedProps) {
                     </a>
                   </div>
                 )}
+                {!f.buttonText && <div className="mt-auto"></div>}
               </div>
             </div>
           </SwiperSlide>

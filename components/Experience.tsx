@@ -78,23 +78,41 @@ export default function Experience({ experiences }: ExperienceProps) {
                         </button>
                       )}
                       {media.type === 'video' && (
-                        <button
-                          onClick={() => openModal(media)}
-                          className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-pink-500/30 bg-gray-800 flex items-center justify-center shadow-lg shadow-pink-500/10 focus:outline-none focus:ring-2 focus:ring-pink-500/50"
-                        >
-                          <span className="text-2xl">▶️</span>
-                          <div className="absolute inset-0 bg-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <span className="text-white font-medium">Play</span>
-                          </div>
-                        </button>
+                        (media.url.includes('youtube.com') || media.url.includes('youtu.be') || 
+                         media.url.includes('dailymotion.com') || media.url.includes('facebook.com') || 
+                         media.url.includes('instagram.com') || media.url.includes('drive.google.com') || 
+                         media.url.includes('vimeo.com') || media.url.includes('twitch.tv')) ? (
+                          <button
+                            onClick={() => openModal(media)}
+                            className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-pink-500/30 bg-gray-800 flex items-center justify-center shadow-lg shadow-pink-500/10 focus:outline-none focus:ring-2 focus:ring-pink-500/50"
+                          >
+                            <span className="text-2xl">▶️</span>
+                            <div className="absolute inset-0 bg-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                              <span className="text-white font-medium">Play</span>
+                            </div>
+                          </button>
+                        ) : (
+                          <a href={media.url} target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-pink-500/30 bg-gray-800 flex items-center justify-center shadow-lg shadow-pink-500/10">
+                            <span className="text-2xl">▶️</span>
+                            <div className="absolute inset-0 bg-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                              <span className="text-white font-medium">Play</span>
+                            </div>
+                          </a>
+                        )
                       )}
                       {media.type === 'pdf' && (
-                        <button
-                          onClick={() => openModal(media)}
-                          className="w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
-                        >
-                          📄
-                        </button>
+                        (media.url.includes('drive.google.com') || media.url.includes('docs.google.com')) ? (
+                          <button
+                            onClick={() => openModal(media)}
+                            className="w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                          >
+                            📄
+                          </button>
+                        ) : (
+                          <a href={media.url} target="_blank" rel="noopener noreferrer" className="w-16 h-16 flex items-center justify-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg text-sm text-gray-300 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 border border-purple-500/30">
+                            📄
+                          </a>
+                        )
                       )}
                       {(media.type === 'ppt' || media.type === 'pptx') && (
                         media.url.includes('drive.google.com') || media.url.includes('docs.google.com') ? (

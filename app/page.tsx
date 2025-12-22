@@ -67,7 +67,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-gradient-radial from-violet-500/5 via-purple-500/5 to-pink-500/5"></div>
       <div className="relative z-10">
         {profile.bannerUrl && (
-          <div className="w-full h-32 md:h-40 lg:h-48 bg-cover bg-center bg-no-repeat relative">
+          <div className="w-full h-40 md:h-52 lg:h-64 bg-cover bg-center bg-no-repeat relative">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-violet-500/20"></div>
             <div className="absolute inset-0" style={{ backgroundImage: `url(${profile.bannerUrl})` }}></div>
           </div>
