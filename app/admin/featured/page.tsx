@@ -5,6 +5,7 @@ import { Featured } from '@/types'
 import { getFeatured, addFeatured, updateFeatured, deleteFeatured } from '@/lib/data'
 import { useRouter } from 'next/navigation'
 import MDEditor from '@uiw/react-md-editor'
+import { convertToViewableUrl } from '@/lib/mediaUtils'
 
 export default function FeaturedAdmin() {
   const router = useRouter()
@@ -197,7 +198,7 @@ export default function FeaturedAdmin() {
         {featured.map(item => (
           <div key={item.id} className="bg-gray-800 p-4 rounded flex justify-between items-start">
             <div className="flex gap-4">
-              <img src={item.imageUrl} alt={item.text} className="w-16 h-16 object-cover rounded" />
+              <img src={convertToViewableUrl(item.imageUrl)} alt={item.text} className="w-16 h-16 object-cover rounded" />
               <div>
                 <p className="font-semibold">{item.text}</p>
                 {item.buttonText && <p className="text-sm text-blue-400">Button: {item.buttonText}</p>}

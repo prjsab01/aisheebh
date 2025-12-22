@@ -2,6 +2,7 @@ import { Entry } from '@/types'
 import ReactMarkdown from 'react-markdown'
 import { useState } from 'react'
 import MediaModal from './MediaModal'
+import { convertToViewableUrl } from '@/lib/mediaUtils'
 
 interface ExperienceProps {
   experiences: Entry[]
@@ -29,7 +30,7 @@ export default function Experience({ experiences }: ExperienceProps) {
             <div className="bg-gray-800/50 p-6 rounded-lg border border-gray-700/50 backdrop-blur-sm">
               <div className="flex items-center mb-3">
                 {exp.logoUrl && (
-                  <img src={exp.logoUrl} alt={exp.organization || 'Organization'} className="w-10 h-10 mr-3 rounded-lg border border-gray-600" />
+                  <img src={convertToViewableUrl(exp.logoUrl)} alt={exp.organization || 'Organization'} className="w-10 h-10 mr-3 rounded-lg border border-gray-600" />
                 )}
                 <div>
                   <h3 className="text-xl font-semibold text-white">{exp.title}</h3>
@@ -71,7 +72,7 @@ export default function Experience({ experiences }: ExperienceProps) {
                           onClick={() => openModal(media)}
                           className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-violet-500/30 shadow-lg shadow-violet-500/10 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
                         >
-                          <img src={media.url} alt="Media" className="w-full h-full object-cover" />
+                          <img src={convertToViewableUrl(media.url)} alt="Media" className="w-full h-full object-cover" />
                           <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300 flex items-end justify-center pb-1">
                             <span className="text-white text-xs font-medium">View</span>
                           </div>

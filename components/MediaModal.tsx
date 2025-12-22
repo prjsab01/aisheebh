@@ -130,19 +130,12 @@ export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) 
         }
       case 'pdf':
         if (media.url.includes('drive.google.com') || media.url.includes('docs.google.com')) {
-          // Convert Google Drive link to embeddable format
-          let embedUrl = media.url;
-          if (media.url.includes('/file/d/')) {
-            const fileId = media.url.split('/file/d/')[1].split('/')[0];
-            embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
-          } else if (media.url.includes('/open?id=')) {
-            const fileId = media.url.split('id=')[1].split('&')[0];
-            embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
-          }
+          // Use Google Docs viewer for better compatibility with shared links
+          const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(media.url)}&embedded=true`;
           
           return (
             <iframe
-              src={embedUrl}
+              src={viewerUrl}
               className="w-full h-full min-h-[600px]"
               title="PDF Viewer"
             />
@@ -167,18 +160,12 @@ export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) 
       case 'ppt':
       case 'pptx':
         if (media.url.includes('drive.google.com') || media.url.includes('docs.google.com')) {
-          // Convert Google Drive link to embeddable format
-          let embedUrl = media.url;
-          if (media.url.includes('/file/d/')) {
-            const fileId = media.url.split('/file/d/')[1].split('/')[0];
-            embedUrl = `https://docs.google.com/presentation/d/${fileId}/embed`;
-          } else if (media.url.includes('/presentation/d/')) {
-            embedUrl = media.url.replace('/edit', '/embed');
-          }
+          // Use Google Docs viewer for better compatibility with shared links
+          const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(media.url)}&embedded=true`;
           
           return (
             <iframe
-              src={embedUrl}
+              src={viewerUrl}
               className="w-full h-full min-h-[600px]"
               title="PowerPoint Presentation"
               allowFullScreen
@@ -200,13 +187,42 @@ export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) 
             </div>
           );
         }
-      default:
+      case 'doc':
+      case 'docx':
+        if (media.url.includes('drive.google.com') || media.url.includes('docs.google.com')) {
+          // Use Google Docs viewer for better compatibility with shared links
+          const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(media.url)}&embedded=true`;
+          
+          return (
+            <iframe
+              src={viewerUrl}
+              className="w-full h-full min-h-[600px]"
+              title="Word Document"
+              allowFullScreen
+            />
+          );
+        } else {
+          return (
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="text-6xl mb-4">📄</div>
+              <p className="text-white text-lg mb-4">Word Document</p>
+              <a
+                href={media.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg shadow-violet-500/25"
+              >
+                Open in New Tab
+              </a>
+            </div>
+          );
+        }
         return (
           <div className="flex flex-col items-center justify-center h-full text-center">
             <div className="text-6xl mb-4">🔗</div>
             <p className="text-white text-lg mb-4">External Link</p>
             <a
-              href={media.url}
+              href={media!.url}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-600 hover:to-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg shadow-violet-500/25"

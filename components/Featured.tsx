@@ -5,6 +5,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import ReactMarkdown from 'react-markdown'
+import { convertToViewableUrl } from '@/lib/mediaUtils'
 
 interface FeaturedProps {
   featured: FeaturedType[]
@@ -38,7 +39,7 @@ export default function Featured({ featured }: FeaturedProps) {
             <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden shadow-2xl shadow-violet-500/10 border border-gray-700/50 h-full flex flex-col backdrop-blur-sm">
               <div className="relative">
                 <img
-                  src={f.imageUrl}
+                  src={convertToViewableUrl(f.imageUrl)}
                   alt={f.text}
                   className="w-full h-48 object-cover"
                 />

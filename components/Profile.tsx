@@ -1,4 +1,5 @@
 import { Profile as ProfileType, Highlight } from '@/types'
+import { convertToViewableUrl } from '@/lib/mediaUtils'
 
 interface ProfileProps {
   profile: ProfileType
@@ -11,7 +12,7 @@ export default function Profile({ profile, highlights = [] }: ProfileProps) {
       {profile.photoUrl ? (
         <div className="relative mb-4">
           <img
-            src={profile.photoUrl}
+            src={convertToViewableUrl(profile.photoUrl)}
             alt={profile.name}
             className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-violet-500/30 shadow-lg shadow-violet-500/20"
           />
