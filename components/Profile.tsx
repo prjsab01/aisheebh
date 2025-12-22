@@ -1,5 +1,6 @@
 import { Profile as ProfileType, Highlight } from '@/types'
 import { convertToViewableUrl } from '@/lib/mediaUtils'
+import RobustImage from './RobustImage'
 
 interface ProfileProps {
   profile: ProfileType
@@ -11,7 +12,7 @@ export default function Profile({ profile, highlights = [] }: ProfileProps) {
     <div className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 p-6 rounded-xl border border-violet-500/20 shadow-2xl shadow-violet-500/10 backdrop-blur-sm">
       {profile.photoUrl ? (
         <div className="relative mb-4">
-          <img
+          <RobustImage
             src={convertToViewableUrl(profile.photoUrl)}
             alt={profile.name}
             className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-violet-500/30 shadow-lg shadow-violet-500/20"

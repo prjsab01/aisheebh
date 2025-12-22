@@ -12,22 +12,22 @@ export function convertToViewableUrl(url: string): string {
   if (url.includes('drive.google.com')) {
     let fileId = '';
 
-    // Try different Google Drive URL patterns
+    // Try different Google Drive URL patterns with more permissive regex
     if (url.includes('/file/d/')) {
       // Standard sharing link: https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-      const fileIdMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      const fileIdMatch = url.match(/\/file\/d\/([^/?]+)/);
       if (fileIdMatch && fileIdMatch[1]) {
         fileId = fileIdMatch[1];
       }
     } else if (url.includes('id=')) {
       // Alternative format: https://drive.google.com/open?id=FILE_ID
-      const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      const idMatch = url.match(/[?&]id=([^&]+)/);
       if (idMatch && idMatch[1]) {
         fileId = idMatch[1];
       }
     } else if (url.includes('/d/')) {
       // Short format: https://drive.google.com/d/FILE_ID
-      const shortMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      const shortMatch = url.match(/\/d\/([^/?]+)/);
       if (shortMatch && shortMatch[1]) {
         fileId = shortMatch[1];
       }
@@ -48,50 +48,57 @@ export function convertToViewableUrl(url: string): string {
 }
 
 /**
- * Checks if a URL is a Google Drive sharing link
- * @param url - The URL to check
- * @returns True if it's a Google Drive sharing link
+ * Tests if a Google Drive URL can be converted and logs the result
+ * @param url - The URL to test
  */
-export function isGoogleDriveLink(url: string): boolean {
-  return url.includes('drive.google.com') && (
-    url.includes('/file/d/') ||
-    url.includes('id=') ||
-    url.includes('/d/')
-  )
+export function testGoogleDriveConversion(url: string): void {
+  console.log('Testing Google Drive URL conversion for:', url);
+  const result = convertToViewableUrl(url);
+  console.log('Conversion result:', result);
+
+  if (url !== result) {
+    console.log('✅ URL was converted successfully');
+  } else {
+    console.log('❌ URL was not converted (might not be a Google Drive link)');
+  }
 }
 
 /**
- * Creates a fallback URL for Google Drive images if the primary method fails
+ * Creates multiple fallback URLs for Google Drive images
  * @param url - The original Google Drive URL
- * @returns A fallback URL using Google Drive's thumbnail API
+ * @returns Array of fallback URLs to try
  */
-export function getGoogleDriveFallbackUrl(url: string): string {
-  if (!url.includes('drive.google.com')) return url
+export function getGoogleDriveFallbackUrls(url: string): string[] {
+  if (!url.includes('drive.google.com')) return [url];
 
   let fileId = '';
 
-  // Extract file ID using the same logic as convertToViewableUrl
+  // Extract file ID using the same logic
   if (url.includes('/file/d/')) {
-    const fileIdMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    const fileIdMatch = url.match(/\/file\/d\/([^/?]+)/);
     if (fileIdMatch && fileIdMatch[1]) {
       fileId = fileIdMatch[1];
     }
   } else if (url.includes('id=')) {
-    const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    const idMatch = url.match(/[?&]id=([^&]+)/);
     if (idMatch && idMatch[1]) {
       fileId = idMatch[1];
     }
   } else if (url.includes('/d/')) {
-    const shortMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const shortMatch = url.match(/\/d\/([^/?]+)/);
     if (shortMatch && shortMatch[1]) {
       fileId = shortMatch[1];
     }
   }
 
   if (fileId) {
-    // Try Google Drive thumbnail API as fallback
-    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
+    return [
+      `https://drive.google.com/uc?export=view&id=${fileId}`,
+      `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`,
+      `https://lh3.googleusercontent.com/d/${fileId}=w1000`,
+      url // Original URL as last resort
+    ];
   }
 
-  return url;
+  return [url];
 }

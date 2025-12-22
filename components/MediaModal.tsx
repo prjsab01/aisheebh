@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { convertToViewableUrl } from '@/lib/mediaUtils'
+import RobustImage from './RobustImage'
 
 interface MediaModalProps {
   isOpen: boolean
@@ -35,7 +36,7 @@ export default function MediaModal({ isOpen, onClose, media }: MediaModalProps) 
     switch (media.type) {
       case 'image':
         return (
-          <img
+          <RobustImage
             src={convertToViewableUrl(media.url)}
             alt="Media content"
             className="max-w-full max-h-full object-contain"

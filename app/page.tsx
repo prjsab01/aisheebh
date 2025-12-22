@@ -9,6 +9,7 @@ import { Profile as ProfileType, Highlight, Featured as FeaturedType, Entry, Sec
 import { getProfile, getHighlights, getFeatured, getSections, getEntries } from '@/lib/data'
 import ReactMarkdown from 'react-markdown'
 import { convertToViewableUrl } from '@/lib/mediaUtils'
+import RobustImage from '@/components/RobustImage'
 
 export default function Home() {
   const [profile, setProfile] = useState<ProfileType | null>(null)
@@ -114,7 +115,7 @@ export default function Home() {
                         <div key={entry.id} className="mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700/50 backdrop-blur-sm">
                           <div className="flex items-center mb-3">
                             {entry.logoUrl && (
-                              <img src={convertToViewableUrl(entry.logoUrl)} alt={entry.organization || 'Institution'} className="w-10 h-10 mr-3 rounded-lg border border-gray-600" />
+                              <RobustImage src={convertToViewableUrl(entry.logoUrl)} alt={entry.organization || 'Institution'} className="w-10 h-10 mr-3 rounded-lg border border-gray-600" />
                             )}
                             <div>
                               <h3 className="text-xl font-semibold text-white">{entry.title}</h3>
@@ -158,7 +159,7 @@ export default function Home() {
                                 <a key={index} href={media.url} target="_blank" rel="noopener noreferrer" className="group transition-all duration-300 hover:scale-105">
                                   {media.type === 'image' && (
                                     <div className="relative w-16 h-16 rounded-lg overflow-hidden border-2 border-violet-500/30 shadow-lg shadow-violet-500/10">
-                                      <img src={convertToViewableUrl(media.url)} alt="Media" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+                                      <RobustImage src={convertToViewableUrl(media.url)} alt="Media" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
                                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-1">
                                         <span className="text-white text-xs font-medium">View</span>
                                       </div>

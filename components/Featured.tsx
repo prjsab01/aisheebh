@@ -6,6 +6,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import ReactMarkdown from 'react-markdown'
 import { convertToViewableUrl } from '@/lib/mediaUtils'
+import RobustImage from './RobustImage'
 
 interface FeaturedProps {
   featured: FeaturedType[]
@@ -38,10 +39,10 @@ export default function Featured({ featured }: FeaturedProps) {
           <SwiperSlide key={f.id}>
             <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden shadow-2xl shadow-violet-500/10 border border-gray-700/50 h-full flex flex-col backdrop-blur-sm">
               <div className="relative">
-                <img
+                <RobustImage
                   src={convertToViewableUrl(f.imageUrl)}
                   alt={f.text}
-                  className="w-full h-44 object-cover"
+                  className="w-full h-40 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
               </div>
