@@ -56,7 +56,8 @@ export default function Content() {
       coAuthors: [],
       publicationUrl: '',
       rssUrl: '',
-      publicationType: ''
+      publicationType: '',
+      publicationTypeLabel: ''
     })
     setEditing('new')
   }
@@ -249,6 +250,13 @@ export default function Content() {
                 <option value="journals">Journals</option>
                 <option value="blog">Blog Posts</option>
               </select>
+              <input
+                type="text"
+                placeholder="Custom Tab Name (optional - defaults to type name)"
+                value={formData.publicationTypeLabel || ''}
+                onChange={(e) => setFormData({ ...formData, publicationTypeLabel: e.target.value })}
+                className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
+              />
             </>
           )}
           <label className="flex items-center mb-2">

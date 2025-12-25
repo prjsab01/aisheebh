@@ -1,6 +1,6 @@
 import { collection, getDocs, query, where, orderBy, doc, setDoc, addDoc, deleteDoc } from 'firebase/firestore';
 import { db } from './firebase';
-import { Profile, Highlight, Featured, Entry, Section } from '@/types';
+import { Profile, Highlight, Featured, Entry, Section, Social } from '@/types';
 
 export async function getProfile(): Promise<Profile | null> {
   const q = query(collection(db, 'profiles'), orderBy('order', 'desc'));
@@ -97,4 +97,23 @@ export async function updateEntry(entry: Entry): Promise<void> {
 
 export async function deleteEntry(id: string): Promise<void> {
   await deleteDoc(doc(db, 'entries', id));
+}
+
+export async function getSocials(): Promise<Social[]> {
+  const q = query(collection(db, 'socials'), orderBy('order', 'desc'));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Social));
+}
+
+export async function addSocial(social: Omit<Social, 'id'>): Promise<void> {
+  await addDoc(collection(db, 'socials'), social);
+}
+
+export async function updateSocial(social: Social): Promise<void> {
+  const socialRef = doc(db, 'socials', social.id);
+  await setDoc(socialRef, social, { merge: true });
+}
+
+export async function deleteSocial(id: string): Promise<void> {
+  await deleteDoc(doc(db, 'socials', id));
 }

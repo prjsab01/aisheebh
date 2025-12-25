@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Highlight } from '@/types'
 import { getHighlights, addHighlight, updateHighlight, deleteHighlight } from '@/lib/data'
-import { useRouter } from 'next/navigation'
+import MDEditor from '@uiw/react-md-editor'
 
 export default function HighlightsAdmin() {
   const router = useRouter()
@@ -103,13 +104,14 @@ export default function HighlightsAdmin() {
       <form onSubmit={handleSubmit} className="mb-8 space-y-4 bg-gray-800 p-4 rounded">
         <h2 className="text-xl font-semibold">{editing ? 'Edit Highlight' : 'Add New Highlight'}</h2>
         <div>
-          <label className="block mb-1">Text</label>
-          <input
-            type="text"
+          <label className="block mb-1">Text (Markdown supported)</label>
+          <MDEditor
             value={formData.text}
-            onChange={(e) => setFormData({ ...formData, text: e.target.value })}
-            className="w-full p-2 bg-gray-700 text-white rounded"
-            required
+            onChange={(value) => setFormData({ ...formData, text: value || '' })}
+            preview="edit"
+            hideToolbar={false}
+            visibleDragbar={false}
+            data-color-mode="dark"
           />
         </div>
         <div>

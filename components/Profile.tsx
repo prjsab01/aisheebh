@@ -1,6 +1,7 @@
 import { Profile as ProfileType, Highlight } from '@/types'
 import { convertToViewableUrl } from '@/lib/mediaUtils'
 import RobustImage from './RobustImage'
+import ReactMarkdown from 'react-markdown'
 
 interface ProfileProps {
   profile: ProfileType
@@ -33,7 +34,18 @@ export default function Profile({ profile, highlights = [] }: ProfileProps) {
           {highlights.map(h => (
             <div key={h.id} className="flex items-start gap-3 p-3 bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-lg border border-pink-500/20 backdrop-blur-sm">
               <span className="text-pink-400 text-lg mt-0.5">{h.icon || '✨'}</span>
-              <p className="text-gray-300 leading-relaxed text-sm">{h.text}</p>
+              <div className="text-gray-300 leading-relaxed text-sm prose prose-invert prose-sm max-w-none">
+                <ReactMarkdown
+                  components={{
+                    p: ({children}) => <p className="text-gray-300 leading-relaxed mb-1">{children}</p>,
+                    strong: ({children}) => <strong className="text-white font-semibold">{children}</strong>,
+                    em: ({children}) => <em className="text-violet-400">{children}</em>,
+                    code: ({children}) => <code className="bg-gray-800 px-1 py-0.5 rounded text-xs text-violet-300">{children}</code>,
+                  }}
+                >
+                  {h.text}
+                </ReactMarkdown>
+              </div>
             </div>
           ))}
         </div>

@@ -7,6 +7,7 @@ import Featured from '@/components/Featured'
 import Experience from '@/components/Experience'
 import Publications from '@/components/Publications'
 import MediaModal from '@/components/MediaModal'
+import Footer from '@/components/Footer'
 import { Profile as ProfileType, Highlight, Featured as FeaturedType, Entry, Section as SectionType } from '@/types'
 import { getProfile, getHighlights, getFeatured, getSections, getEntries } from '@/lib/data'
 import ReactMarkdown from 'react-markdown'
@@ -251,6 +252,7 @@ export default function Home() {
         media={selectedMedia}
         title={modalTitle}
       />
+      <Footer />
     </div>
   )
 }

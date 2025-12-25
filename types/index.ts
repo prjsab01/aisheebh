@@ -39,6 +39,7 @@ export interface Entry extends BaseDocument {
   publicationUrl?: string;
   rssUrl?: string;
   publicationType?: string; // For tab categorization
+  publicationTypeLabel?: string; // Custom display name for publication type tabs
 }
 
 export interface Highlight extends BaseDocument {
