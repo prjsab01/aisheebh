@@ -14,12 +14,16 @@ export default function Publications({ publications, onOpenModal }: Publications
 
   // Group publications by type and get custom labels
   const publicationTypes = ['all', ...Array.from(new Set(publications.map(p => p.publicationType).filter(Boolean)))] as string[]
-  
+  const publicationTypeLabels = new Map<string, string>()
+  publications.forEach(p => {
+    if (p.publicationType && p.publicationTypeLabel && !publicationTypeLabels.has(p.publicationType)) {
+      publicationTypeLabels.set(p.publicationType, p.publicationTypeLabel)
+    }
+  })
+
   const getPublicationTypeLabel = (type: string) => {
     if (type === 'all') return 'All Publications'
-    // Find the first publication with this type to get the custom label
-    const pub = publications.find(p => p.publicationType === type)
-    return pub?.publicationTypeLabel || type.charAt(0).toUpperCase() + type.slice(1)
+    return publicationTypeLabels.get(type) || type.charAt(0).toUpperCase() + type.slice(1)
   }
 
   const filteredPublications = activeTab === 'all'

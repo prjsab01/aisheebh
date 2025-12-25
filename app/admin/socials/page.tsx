@@ -12,7 +12,7 @@ export default function SocialsAdmin() {
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
   const [editing, setEditing] = useState<string | null>(null)
-  const [formData, setFormData] = useState({ platform: '', url: '', icon: '', order: 1, visibility: true })
+  const [formData, setFormData] = useState({ platform: '', url: '', icon: '', handle: '', logoUrl: '', order: 1, visibility: true })
 
   useEffect(() => {
     const fetchSocials = async () => {
@@ -50,7 +50,7 @@ export default function SocialsAdmin() {
         setMessage('Social added successfully!')
       }
       setEditing(null)
-      setFormData({ platform: '', url: '', icon: '', order: socials.length + 1, visibility: true })
+      setFormData({ platform: '', url: '', icon: '', handle: '', logoUrl: '', order: socials.length + 1, visibility: true })
     } catch (error) {
       console.error('Error saving:', error)
       setMessage('Error saving social')
@@ -61,7 +61,7 @@ export default function SocialsAdmin() {
 
   const handleCancel = () => {
     setEditing(null)
-    setFormData({ platform: '', url: '', icon: '', order: socials.length + 1, visibility: true })
+    setFormData({ platform: '', url: '', icon: '', handle: '', logoUrl: '', order: socials.length + 1, visibility: true })
   }
 
   if (loading) {
@@ -102,6 +102,27 @@ export default function SocialsAdmin() {
             className="w-full p-2 bg-gray-700 text-white rounded"
             placeholder="https://..."
             required
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Handle</label>
+          <input
+            type="text"
+            value={formData.handle}
+            onChange={(e) => setFormData({ ...formData, handle: e.target.value })}
+            className="w-full p-2 bg-gray-700 text-white rounded"
+            placeholder="e.g., @yourhandle"
+            required
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Logo URL (optional)</label>
+          <input
+            type="url"
+            value={formData.logoUrl}
+            onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
+            className="w-full p-2 bg-gray-700 text-white rounded"
+            placeholder="https://..."
           />
         </div>
         <div>
@@ -163,6 +184,7 @@ export default function SocialsAdmin() {
               <div>
                 <p className="font-medium">{social.platform}</p>
                 <p className="text-sm text-gray-400">{social.url}</p>
+                <p className="text-sm text-gray-400">{social.handle}</p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -173,6 +195,7 @@ export default function SocialsAdmin() {
                     platform: social.platform,
                     url: social.url,
                     icon: social.icon,
+                    handle: social.handle,
                     order: social.order,
                     visibility: social.visibility
                   })

@@ -58,6 +58,8 @@ export interface Social extends BaseDocument {
   platform: string;
   url: string;
   icon: string;
+  handle: string;
+  logoUrl?: string;
 }
 
 export interface Setting {

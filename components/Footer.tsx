@@ -33,16 +33,26 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-8 py-4">
         <div className="flex items-center justify-center gap-6">
           {visibleSocials.map(social => (
-            <a
-              key={social.id}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-violet-400 transition-colors duration-300 text-2xl hover:scale-110 transform"
-              title={social.platform}
-            >
-              {social.icon}
-            </a>
+            <div key={social.id} className="flex items-center gap-2">
+              {social.logoUrl ? (
+                <img
+                  src={social.logoUrl}
+                  alt={social.platform}
+                  className="w-6 h-6 object-contain"
+                />
+              ) : (
+                <span className="text-2xl">{social.icon}</span>
+              )}
+              <span className="text-gray-400">{social.platform}</span>
+              <a
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-violet-400 hover:underline"
+              >
+                ({social.handle})
+              </a>
+            </div>
           ))}
         </div>
         <div className="text-center mt-2">
