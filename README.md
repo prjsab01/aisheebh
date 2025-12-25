@@ -82,8 +82,9 @@ A premium, professional portfolio platform with a LinkedIn-style public viewer a
 
 2. **Configure Build Settings**:
    - **Build command**: `npm run build`
-   - **Build output directory**: `out`
+   - **Build output directory**: `.next` (or leave as default)
    - **Root directory**: `/` (leave empty)
+   - **Node.js version**: 18 (specified in `.nvmrc`)
 
 3. **Environment Variables**:
    - Add all your Firebase config variables from `.env.local`:
@@ -99,7 +100,7 @@ A premium, professional portfolio platform with a LinkedIn-style public viewer a
    - Cloudflare will build and deploy your site
    - Future pushes to `main` branch will auto-deploy
 
-**Note**: No `wrangler.toml` file is needed for Cloudflare Pages static site deployment. The build configuration is set in the Cloudflare dashboard.
+**Note**: The `wrangler.toml` file is included for advanced Cloudflare Workers configuration if needed, but Cloudflare Pages handles the deployment automatically.
 
 ## Sample Data
 
