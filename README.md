@@ -100,7 +100,7 @@ A premium, professional portfolio platform with a LinkedIn-style public viewer a
    - Cloudflare will build and deploy your site
    - Future pushes to `main` branch will auto-deploy
 
-**Note**: The `wrangler.toml` file is included for advanced Cloudflare Workers configuration if needed, but Cloudflare Pages handles the deployment automatically.
+**Note**: No `wrangler.toml` file is needed for Cloudflare Pages. All build configuration is handled through the Cloudflare Pages dashboard.
 
 ## Sample Data
 
