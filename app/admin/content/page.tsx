@@ -44,6 +44,7 @@ export default function Content() {
       content: '',
       dateRange: { start: '', end: '' },
       tags: [],
+      tagsRaw: '',
       organization: '',
       logoUrl: '',
       location: '',
@@ -54,6 +55,7 @@ export default function Content() {
       publisher: '',
       publicationDate: '',
       coAuthors: [],
+      coAuthorsRaw: '',
       publicationUrl: '',
       rssUrl: '',
       publicationType: '',
@@ -63,7 +65,11 @@ export default function Content() {
   }
 
   const handleEdit = (entry: Entry) => {
-    setFormData(entry)
+    setFormData({
+      ...entry,
+      coAuthorsRaw: entry.coAuthors?.join(', ') || '',
+      tagsRaw: entry.tags?.join(', ') || ''
+    })
     setEditing(entry.id)
   }
 
@@ -187,8 +193,9 @@ export default function Content() {
           <input
             type="text"
             placeholder={sections.find(s => s.id === selectedSection)?.type === 'experience' ? 'Skills (comma separated, optional)' : sections.find(s => s.id === selectedSection)?.type === 'education' ? 'Major Courses (comma separated, optional)' : 'Tags (comma separated, optional)'}
-            value={formData.tags?.join(', ') || ''}
-            onChange={(e) => setFormData({ ...formData, tags: e.target.value ? e.target.value.split(',').map((t: string) => t.trim()) : undefined })}
+            value={formData.tagsRaw ?? formData.tags?.join(', ') ?? ''}
+            onChange={(e) => setFormData({ ...formData, tagsRaw: e.target.value })}
+            onBlur={(e) => setFormData({ ...formData, tagsRaw: e.target.value, tags: e.target.value ? e.target.value.split(',').map((t: string) => t.trim()) : undefined })}
             className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
           />
           <input
@@ -219,8 +226,9 @@ export default function Content() {
               <input
                 type="text"
                 placeholder="Co-Authors (comma separated)"
-                value={formData.coAuthors?.join(', ') || ''}
-                onChange={(e) => setFormData({ ...formData, coAuthors: e.target.value ? e.target.value.split(',').map((a: string) => a.trim()) : undefined })}
+                value={formData.coAuthorsRaw ?? formData.coAuthors?.join(', ') ?? ''}
+                onChange={(e) => setFormData({ ...formData, coAuthorsRaw: e.target.value })}
+                onBlur={(e) => setFormData({ ...formData, coAuthorsRaw: e.target.value, coAuthors: e.target.value ? e.target.value.split(',').map((a: string) => a.trim()) : undefined })}
                 className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
               />
               <input
