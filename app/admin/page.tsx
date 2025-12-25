@@ -43,6 +43,9 @@ export default function Dashboard() {
         <a href="/admin/content" className="block bg-blue-600 p-4 rounded hover:bg-blue-700 text-center">
           Manage Content
         </a>
+        <a href="/admin/socials" className="block bg-green-600 p-4 rounded hover:bg-green-700 text-center">
+          Manage Social Links
+        </a>
       </div>
 
       <div className="mt-8">
