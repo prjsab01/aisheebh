@@ -196,6 +196,7 @@ export default function SocialsAdmin() {
                     url: social.url,
                     icon: social.icon,
                     handle: social.handle,
+                    logoUrl: social.logoUrl || '',
                     order: social.order,
                     visibility: social.visibility
                   })
