@@ -245,19 +245,22 @@ export default function Content() {
                 onChange={(e) => setFormData({ ...formData, rssUrl: e.target.value })}
                 className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
               />
-              <select
+              <input
+                type="text"
+                placeholder="Publication Type (e.g., books, articles, journals, or custom type)"
                 value={formData.publicationType || ''}
                 onChange={(e) => setFormData({ ...formData, publicationType: e.target.value })}
                 className="w-full p-2 mb-2 bg-gray-700 text-white rounded"
-              >
-                <option value="">Select Publication Type</option>
-                <option value="books">Books</option>
-                <option value="articles">Articles</option>
-                <option value="news">News Articles</option>
-                <option value="medium">Medium Blogs</option>
-                <option value="journals">Journals</option>
-                <option value="blog">Blog Posts</option>
-              </select>
+                list="publication-types"
+              />
+              <datalist id="publication-types">
+                <option value="books" />
+                <option value="articles" />
+                <option value="news" />
+                <option value="medium" />
+                <option value="journals" />
+                <option value="blog" />
+              </datalist>
               <input
                 type="text"
                 placeholder="Custom Tab Name (optional - defaults to type name)"

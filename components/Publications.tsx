@@ -12,39 +12,49 @@ interface PublicationsProps {
 export default function Publications({ publications, onOpenModal }: PublicationsProps) {
   const [activeTab, setActiveTab] = useState<string>('all')
 
-  // Group publications by type and get custom labels
-  const publicationTypes = ['all', ...Array.from(new Set(publications.map(p => p.publicationType).filter(Boolean)))] as string[]
-  const publicationTypeLabels = new Map<string, string>()
+  // Group publications by their effective tab name (publicationTypeLabel if exists, otherwise publicationType)
+  const tabGroups = new Map<string, Entry[]>()
+  const tabLabels = new Map<string, string>()
+
   publications.forEach(p => {
-    if (p.publicationType && p.publicationTypeLabel && !publicationTypeLabels.has(p.publicationType)) {
-      publicationTypeLabels.set(p.publicationType, p.publicationTypeLabel)
+    if (p.publicationType) {
+      const tabKey = p.publicationTypeLabel || p.publicationType
+      const tabLabel = p.publicationTypeLabel || p.publicationType.charAt(0).toUpperCase() + p.publicationType.slice(1)
+
+      if (!tabGroups.has(tabKey)) {
+        tabGroups.set(tabKey, [])
+        tabLabels.set(tabKey, tabLabel)
+      }
+      tabGroups.get(tabKey)!.push(p)
     }
   })
 
-  const getPublicationTypeLabel = (type: string) => {
-    if (type === 'all') return 'All Publications'
-    return publicationTypeLabels.get(type) || type.charAt(0).toUpperCase() + type.slice(1)
+  const publicationTabs = ['all', ...Array.from(tabGroups.keys())]
+
+  const getTabLabel = (tabKey: string) => {
+    if (tabKey === 'all') return 'All Publications'
+    return tabLabels.get(tabKey) || tabKey
   }
 
   const filteredPublications = activeTab === 'all'
     ? publications
-    : publications.filter(p => p.publicationType === activeTab)
+    : tabGroups.get(activeTab) || []
 
   return (
     <div className="space-y-6">
       {/* Tab Navigation */}
       <div className="flex flex-wrap gap-2 mb-6">
-        {publicationTypes.map(type => (
+        {publicationTabs.map(tabKey => (
           <button
-            key={type}
-            onClick={() => setActiveTab(type)}
+            key={tabKey}
+            onClick={() => setActiveTab(tabKey)}
             className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-              activeTab === type
+              activeTab === tabKey
                 ? 'bg-violet-500 text-white shadow-lg shadow-violet-500/25'
                 : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:text-white'
             }`}
           >
-            {type === 'all' ? 'All Publications' : getPublicationTypeLabel(type)}
+            {getTabLabel(tabKey)}
           </button>
         ))}
       </div>

@@ -40,6 +40,7 @@ export function convertToViewableUrl(url: string): string {
       return convertedUrl;
     } else {
       console.warn('Could not extract file ID from Google Drive URL:', url);
+      return url;
     }
   }
 
