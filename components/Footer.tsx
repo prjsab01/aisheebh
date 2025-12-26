@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Social } from '@/types'
 import { getSocials } from '@/lib/data'
+import { convertToViewableUrl } from '@/lib/mediaUtils'
 
 export default function Footer() {
   const [socials, setSocials] = useState<Social[]>([])
@@ -30,13 +31,13 @@ export default function Footer() {
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm border-t border-gray-700/50 z-40">
-      <div className="max-w-6xl mx-auto px-8 py-4">
+      <div className="max-w-6xl mx-auto px-8 py-2">
         <div className="flex items-center justify-center gap-6">
           {visibleSocials.map(social => (
             <div key={social.id} className="flex items-center gap-2">
               {social.logoUrl ? (
                 <img
-                  src={social.logoUrl}
+                  src={convertToViewableUrl(social.logoUrl)}
                   alt={social.platform}
                   className="w-6 h-6 object-contain"
                 />

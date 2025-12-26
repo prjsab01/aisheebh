@@ -133,7 +133,6 @@ export default function SocialsAdmin() {
             onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
             className="w-full p-2 bg-gray-700 text-white rounded"
             placeholder="e.g., 🔗, 📧, 🐦"
-            required
           />
         </div>
         <div>
