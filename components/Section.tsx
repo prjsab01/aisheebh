@@ -9,7 +9,7 @@ export default function Section({ title, children }: SectionProps) {
   return (
     <div className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 p-6 rounded-xl mb-8 border border-purple-500/20 shadow-2xl shadow-purple-500/10 backdrop-blur-sm">
       <h2 className="text-2xl font-bold mb-6 text-white border-b border-purple-500/30 pb-2 drop-shadow-lg">{title}</h2>
-      <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-violet-500 scrollbar-track-gray-700">
+      <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-violet-500 scrollbar-track-gray-700 hover:scrollbar-thumb-violet-400 scrollbar-thumb-rounded scrollbar-track-rounded">
         {children}
       </div>
     </div>

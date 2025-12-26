@@ -208,7 +208,12 @@ export default function SocialsAdmin() {
                 onClick={async () => {
                   if (confirm('Are you sure you want to delete this social link?')) {
                     try {
-                      console.log('Deleting social with ID:', social.id)
+                      console.log('Deleting social with ID:', social.id, 'Type:', typeof social.id, 'Length:', social.id?.length)
+                      if (!social.id || social.id === 'temp') {
+                        console.error('Invalid social ID:', social.id)
+                        setMessage('Cannot delete social link: invalid ID')
+                        return
+                      }
                       await deleteSocial(social.id)
                       setSocials(socials.filter(s => s.id !== social.id))
                       setMessage('Social link deleted successfully!')

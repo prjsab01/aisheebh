@@ -60,7 +60,7 @@ export default function Publications({ publications, onOpenModal }: Publications
       </div>
 
       {/* Publications List */}
-      <div className="max-h-96 overflow-y-auto space-y-4 publications-scroll">
+      <div className="space-y-4">
         {filteredPublications.map(pub => (
           <div key={pub.id} className="bg-gray-800/50 p-6 rounded-lg border border-gray-700/50 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300 w-full">
             <div className="flex flex-col lg:flex-row gap-6">

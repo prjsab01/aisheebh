@@ -34,9 +34,18 @@ export function convertToViewableUrl(url: string): string {
     }
 
     if (fileId) {
-      // Convert to direct view URL that works for images
+      // Try different Google Drive URL formats for better compatibility
+      // Method 1: Direct view URL (most common)
       const convertedUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+      // Method 2: Thumbnail URL (sometimes works better)
+      // const thumbnailUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
+      // Method 3: Direct download URL (for images)
+      // const downloadUrl = `https://drive.google.com/uc?id=${fileId}&export=download`;
+
       console.log('Converted Google Drive URL:', url, '->', convertedUrl);
+      console.log('File ID extracted:', fileId);
+      console.log('Try this URL manually:', `https://drive.google.com/uc?export=view&id=${fileId}`);
+
       return convertedUrl;
     } else {
       console.warn('Could not extract file ID from Google Drive URL:', url);
