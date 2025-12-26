@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom scrollbar styling for all sections */
+.scrollbar-custom {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(139,92,246,0.8) rgba(55,65,81,0.4);
+}
+.scrollbar-custom::-webkit-scrollbar {
+	width: 8px;
+}
+.scrollbar-custom::-webkit-scrollbar-track {
+	background: rgba(55,65,81,0.4);
+	border-radius: 4px;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb {
+	background: rgba(139,92,246,0.8);
+	border-radius: 4px;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+	background: rgba(167,139,250,0.9);
+}
+
 /* Publications scrollbar styling */
 .publications-scroll {
 	scrollbar-width: thin;

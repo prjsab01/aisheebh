@@ -1,10 +1,3 @@
-// Utility functions for handling media URLs
-
-/**
- * Converts Google Drive sharing links to direct viewable URLs for images
- * @param url - The original URL (could be Google Drive sharing link or regular URL)
- * @returns The converted URL that can be used as image src
- */
 export function convertToViewableUrl(url: string): string {
   if (!url) return url
 
@@ -37,18 +30,21 @@ export function convertToViewableUrl(url: string): string {
       // Try different Google Drive URL formats for better compatibility
       // Method 1: Direct view URL (most common)
       const convertedUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
-      // Method 2: Thumbnail URL (sometimes works better)
-      // const thumbnailUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
-      // Method 3: Direct download URL (for images)
-      // const downloadUrl = `https://drive.google.com/uc?id=${fileId}&export=download`;
+      // Method 2: Alternative export method
+      const altUrl = `https://drive.google.com/uc?id=${fileId}&export=download`;
+      // Method 3: Try the direct file URL
+      const directUrl = `https://drive.google.com/file/d/${fileId}/view`;
 
-      console.log('Converted Google Drive URL:', url, '->', convertedUrl);
+      console.log('Converted Google Drive URL:', url);
       console.log('File ID extracted:', fileId);
-      console.log('Try this URL manually:', `https://drive.google.com/uc?export=view&id=${fileId}`);
+      console.log('Trying URL:', convertedUrl);
+      console.log('If this doesn\'t work, try:', altUrl);
 
+      // Return the converted URL - if it doesn't work, user can try the alternative
       return convertedUrl;
     } else {
       console.warn('Could not extract file ID from Google Drive URL:', url);
+      console.warn('Make sure you\'re using a sharing link like: https://drive.google.com/file/d/FILE_ID/view?usp=sharing');
       return url;
     }
   }

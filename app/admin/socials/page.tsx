@@ -46,7 +46,9 @@ export default function SocialsAdmin() {
           updatedAt: new Date().toISOString(),
         }
         await addSocial(newSocial)
-        setSocials([...socials, { ...newSocial, id: 'temp' }]) // Refresh will happen
+        // Refresh data to get the actual Firebase-generated ID
+        const updatedData = await getSocials()
+        setSocials(updatedData)
         setMessage('Social added successfully!')
       }
       setEditing(null)
