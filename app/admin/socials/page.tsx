@@ -214,7 +214,7 @@ export default function SocialsAdmin() {
                       setMessage('Social link deleted successfully!')
                     } catch (error) {
                       console.error('Error deleting social:', error)
-                      setMessage(`Error deleting social link: ${error.message}`)
+                      setMessage(`Error deleting social link: ${error instanceof Error ? error.message : 'Unknown error'}`)
                     }
                   }
                 }}
